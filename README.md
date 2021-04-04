@@ -1,4 +1,4 @@
-# Stretch API Layer
+# Miles API Layer
 ### Deployed at https://api-miles.azurewebsites.net/
 ### Dart FE at https://github.com/pattarai/miles-flutter/
 ## Install dependencies
