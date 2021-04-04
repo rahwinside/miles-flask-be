@@ -1,9 +1,7 @@
 import pymysql
-from firebase_admin import auth
 
 from app import app, forbidden, not_found
 from flask import jsonify, request
-from routes.auth_status import authenticate
 from db_config import mysql
 
 @app.route('/login', methods=['POST'])
@@ -14,7 +12,7 @@ def login():
         _id_token = request.form['idToken']
 
         if _uid and _id_token and request.method == 'POST':
-            var = authenticate(_uid, _id_token)
+            var = true
 
             if var == "true":
                 # Check with db if record is complete
