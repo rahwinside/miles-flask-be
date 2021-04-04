@@ -8,11 +8,11 @@ from db_config import mysql
 def login():
     # Login API, returns status=true/false, isComplete=true/false
     try:
-        _uid = request.form['uid']
-        _id_token = request.form['idToken']
+        _email = request.form['email']
+        _password = request.form['password']
 
-        if _uid and _id_token and request.method == 'POST':
-            var = true
+        if _email and _password and request.method == 'POST':
+            var = authenticate_email(_email, _password)
 
             if var == "true":
                 # Check with db if record is complete

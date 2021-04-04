@@ -6,7 +6,7 @@ from pymysql.cursors import DictCursor
 mysql = MySQL(cursorclass=DictCursor)
 
 # MySQL configurations
-app.config['MYSQL_DATABASE_USER'] = "stretch"
+app.config['MYSQL_DATABASE_USER'] = "miles"
 app.config['MYSQL_DATABASE_PASSWORD'] = "Stretch@Pattarai@123"
 app.config['MYSQL_DATABASE_DB'] = "stretch"
 app.config['MYSQL_DATABASE_HOST'] = "vmlinuz.pattarai.in"
