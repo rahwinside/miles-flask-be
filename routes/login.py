@@ -1,7 +1,6 @@
 from app import app, forbidden, internal_server_error
-from flask import request
+from flask import request, jsonify
 from routes.auth import authenticate_email
-
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -13,8 +12,8 @@ def login():
         if _email and _password and request.method == 'POST':
             var = authenticate_email(_email, _password)
 
-            if not var:
-                res = var
+            if var:
+                res = jsonify(var)
                 res.status_code = 200
                 return res
 
