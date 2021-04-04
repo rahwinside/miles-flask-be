@@ -1,0 +1,10 @@
+﻿Flask==1.1.2
+Flask-MySQL==1.5.2
+Flask-RESTful==0.3.8
+PyMySQL==1.0.2
+pyjwt==2.0.1
+google-api-python-client~=1.12.8
+pyOpenSSL
+httplib2~=0.19.0
+uritemplate
+pytz==2021.1
