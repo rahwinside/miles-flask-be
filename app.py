@@ -3,6 +3,7 @@ from flask import Flask, jsonify, request
 app = Flask(__name__)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
+
 # 404 handler
 @app.errorhandler(404)
 def not_found(error=None):
@@ -13,6 +14,8 @@ def not_found(error=None):
     res = jsonify(message)
     res.status_code = 404
     return res
+
+
 # end 404 handler
 
 
@@ -26,6 +29,8 @@ def forbidden(error=None):
     res = jsonify(message)
     res.status_code = 403
     return res
+
+
 # end 403 handler
 
 # 500 handler
@@ -38,6 +43,8 @@ def internal_server_error(error=None):
     res = jsonify(message)
     res.status_code = 500
     return res
+
+
 # end 500 handler
 
 # CORS section
@@ -47,12 +54,14 @@ def after_request_func(response):
     response.headers.add('Access-Control-Allow-Headers', "*")
     response.headers.add('Access-Control-Allow-Methods', "*")
     return response
-# end CORS section
 
+
+# end CORS section
 
 
 # Add API endpoints here
 from routes import login, auth_status
+
 
 @app.route('/')
 def homePage():
@@ -66,7 +75,3 @@ def homePage():
 
 if __name__ == "__main__":
     app.run()
-
-
-
-
