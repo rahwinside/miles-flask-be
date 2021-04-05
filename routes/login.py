@@ -2,10 +2,12 @@ from app import app, forbidden, internal_server_error
 from flask import request, jsonify
 from routes.auth import authenticate_email
 
+
 @app.route('/login', methods=['POST'])
 def login():
     # Login API, returns dict/403/500
     try:
+        print(request.form)
         _email = request.form['email']
         _password = request.form['password']
 
