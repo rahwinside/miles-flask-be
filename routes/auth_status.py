@@ -1,17 +1,17 @@
 from app import app, forbidden, internal_server_error
 from flask import request, jsonify
-from routes.auth import authenticate_email
+from routes.auth import authenticate_email_token
 
 
-@app.route('/login', methods=['POST'])
-def login():
-    # Login API, returns dict/403/500
+@app.route('/auth-status', methods=['POST'])
+def auth_status():
+    # Auth API, returns True-200/False-403/500
     try:
         _email = request.form['email']
-        _password = request.form['password']
+        _token = request.form['token']
 
-        if _email and _password and request.method == 'POST':
-            var = authenticate_email(_email, _password)
+        if _email and _token and request.method == 'POST':
+            var = authenticate_email_token(_email, _token)
 
             if var:
                 res = jsonify(var)

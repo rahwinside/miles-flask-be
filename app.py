@@ -52,7 +52,7 @@ def after_request_func(response):
 
 
 # Add API endpoints here
-from routes import login
+from routes import login, auth_status
 
 @app.route('/')
 def homePage():

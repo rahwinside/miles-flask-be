@@ -28,3 +28,18 @@ def authenticate_email(email, password):
     except Exception as e:
         print(e)
         return False
+
+
+def authenticate_email_token(email, token):
+    try:
+        sql = f"SELECT * FROM users WHERE users.email = '{email}' AND users.token = '{token}'"
+        cnx = mysql.connect()
+        cursor = cnx.cursor()
+        cursor.execute(sql)
+        if cursor.rowcount == 1:
+            return True
+        else:
+            return False
+    except Exception as e:
+        print(e)
+        return False
