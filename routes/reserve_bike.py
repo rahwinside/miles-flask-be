@@ -69,7 +69,8 @@ def reserve_bike():
                 cnx.commit()
 
                 # Update bike with rideID and status
-                sql = f"UPDATE bikes SET currentRideID = {current_ride_id}, status = 'reserved' WHERE bikeID = {bike_id}"
+                sql = f"UPDATE bikes SET currentRideID = {current_ride_id}, status = 'reserved', reserveTimeStamp = " \
+                      f"CURRENT_TIMESTAMP WHERE bikeID = {bike_id} "
                 cursor = cnx.cursor()
                 cursor.execute(sql)
                 cursor.close()
