@@ -1,11 +1,12 @@
 from app import app, forbidden, internal_server_error, bad_request
 from flask import request, jsonify
+
+from db_config import mysql
 from routes.auth import authenticate_email_token
 
 
-@app.route('/auth-status', methods=['POST'])
-def auth_status():
-    # Auth API, returns True-200/False-403/500
+@app.route('/get-bikes', methods=['POST'])
+def get_bikes():
     try:
         try:
             _email = request.form['email']
@@ -18,7 +19,18 @@ def auth_status():
             var = authenticate_email_token(_email, _token)
 
             if var:
-                res = jsonify(var)
+                # Write query here
+                sql = f"SELECT bikes.bikeID, bikes.currentStationID, bikes.status, stations.stationName FROM bikes, " \
+                      f"stations, users WHERE users.email = '{_email}' AND  bikes.currentStationID =  " \
+                      f"stations.stationID AND stations.domain = users.domain "
+                cnx = mysql.connect()
+                cursor = cnx.cursor()
+                cursor.execute(sql)
+                bike_list = []
+                for row in cursor:
+                    bike_list.append(row)
+
+                res = jsonify(bike_list)
                 res.status_code = 200
                 return res
 

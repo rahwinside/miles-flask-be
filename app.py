@@ -3,6 +3,17 @@ from flask import Flask, jsonify, request
 app = Flask(__name__)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
+# 400 handler
+@app.errorhandler(400)
+def bad_request(error=None):
+    message = {
+        'status': 400,
+        'message': 'Bad request',
+    }
+    res = jsonify(message)
+    res.status_code = 400
+    return res
+
 
 # 404 handler
 @app.errorhandler(404)
@@ -14,9 +25,6 @@ def not_found(error=None):
     res = jsonify(message)
     res.status_code = 404
     return res
-
-
-# end 404 handler
 
 
 # 403 handler
@@ -31,8 +39,6 @@ def forbidden(error=None):
     return res
 
 
-# end 403 handler
-
 # 500 handler
 @app.errorhandler(500)
 def internal_server_error(error=None):
@@ -44,8 +50,6 @@ def internal_server_error(error=None):
     res.status_code = 500
     return res
 
-
-# end 500 handler
 
 # CORS section
 @app.after_request
@@ -60,7 +64,7 @@ def after_request_func(response):
 
 
 # Add API endpoints here
-from routes import login, auth_status
+from routes import login, auth_status, get_bikes
 
 
 @app.route('/')

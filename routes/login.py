@@ -1,4 +1,4 @@
-from app import app, forbidden, internal_server_error
+from app import app, forbidden, internal_server_error, bad_request
 from flask import request, jsonify
 from routes.auth import authenticate_email
 
@@ -7,8 +7,12 @@ from routes.auth import authenticate_email
 def login():
     # Login API, returns dict/403/500
     try:
-        _email = request.form['email']
-        _password = request.form['password']
+        try:
+            _email = request.form['email']
+            _password = request.form['password']
+        except Exception as e:
+            print(e)
+            return bad_request()
 
         if _email and _password and request.method == 'POST':
             var = authenticate_email(_email, _password)
