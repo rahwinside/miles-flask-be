@@ -56,7 +56,8 @@ def get_bikes_avail_count():
             var = authenticate_email_token(_email, _token)
 
             if var:
-                sql = f"SELECT stations.stationName, stations.stationID, count(bikes.bikeID) AS available FROM bikes, " \
+                sql = f"SELECT stations.stationName, stations.stationID, stations.latitude, stations.longitude, " \
+                      f"count(bikes.bikeID) AS available FROM bikes, " \
                       f"stations, users WHERE users.email = '{_email}' AND bikes.currentStationID = " \
                       f"stations.stationID AND stations.domain = users.domain AND bikes.status = 'free' GROUP BY " \
                       f"stations.stationName, stations.stationID "
