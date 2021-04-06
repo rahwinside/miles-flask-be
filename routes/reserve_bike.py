@@ -16,7 +16,7 @@ def reserve_bike():
             print(e)
             return bad_request()
 
-        if _email and _token and request.method == 'POST':
+        if _email and _token and _station_id and request.method == 'POST':
             var = authenticate_email_token(_email, _token)
 
             if var:
@@ -39,13 +39,14 @@ def reserve_bike():
 
                 # Find an available bike
                 sql = f"SELECT bikeID from bikes INNER JOIN (SELECT min(lastRideID) minLastRideID FROM bikes WHERE " \
-                      f"currentStationID = = {_station_id}  AND status = 'free') minTable ON bikes.lastRideID = " \
+                      f"currentStationID = {_station_id}  AND status = 'free') minTable ON bikes.lastRideID = " \
                       f"minTable.minLastRideID WHERE lastRideID = minLastRideID AND currentStationID = {_station_id} " \
                       f"AND status = 'free' "
                 cursor = cnx.cursor()
                 cursor.execute(sql)
                 for first_bike in cursor:
                     bike_id = first_bike["bikeID"]
+                    print("BikeID: " + str(bike_id))
                     break
                 cursor.close()
 
@@ -63,11 +64,12 @@ def reserve_bike():
                 cursor = cnx.cursor()
                 cursor.execute(sql)
                 current_ride_id = cursor.lastrowid
+                print("RideID: " + str(current_ride_id))
                 cursor.close()
                 cnx.commit()
 
                 # Update bike with rideID and status
-                sql = f"UPDATE bikes SET currentRideID = {current_ride_id} AND status = 'reserved' WHERE bikeID = {bike_id}"
+                sql = f"UPDATE bikes SET currentRideID = {current_ride_id}, status = 'reserved' WHERE bikeID = {bike_id}"
                 cursor = cnx.cursor()
                 cursor.execute(sql)
                 cursor.close()
