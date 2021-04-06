@@ -1,7 +1,6 @@
-# Stretch API Layer
-### Deployed at https://api-stretch.azurewebsites.net/
-### FE at https://stretch.pattarai.in/
-
+# Miles API Layer
+### Deployed at https://api-miles.azurewebsites.net/
+### Dart FE at https://github.com/pattarai/miles-flutter/
 ## Install dependencies
 ```cmd 
 pip install -r requirements.txt 
