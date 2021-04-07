@@ -19,10 +19,26 @@ def get_bikes():
             var = authenticate_email_token(_email, _token)
 
             if var:
+                # Close all reserved rides older than 5 minutes
+                sql = f"UPDATE rides SET status = 'canceled' WHERE reserveTimeStamp < (NOW() - INTERVAL 5 MINUTE) AND " \
+                      f"status = 'reserved' "
+                cnx = mysql.connect()
+                cursor = cnx.cursor()
+                cursor.execute(sql)
+                cursor.close()
+                cnx.commit()
+
+                # Remove reservations from reserved bikes older than 5 minutes
+                sql = f"UPDATE bikes SET status = 'free', reserveTimeStamp = NULL, currentRideID = NULL WHERE " \
+                      f"reserveTimeStamp < (NOW() - INTERVAL 5 MINUTE) AND status = 'reserved' "
+                cursor = cnx.cursor()
+                cursor.execute(sql)
+                cursor.close()
+                cnx.commit()
+
                 sql = f"SELECT bikes.bikeID, bikes.currentStationID, bikes.status, stations.stationName FROM bikes, " \
                       f"stations, users WHERE users.email = '{_email}' AND  bikes.currentStationID =  " \
                       f"stations.stationID AND stations.domain = users.domain "
-                cnx = mysql.connect()
                 cursor = cnx.cursor()
                 cursor.execute(sql)
                 bike_list = []
@@ -56,12 +72,28 @@ def get_bikes_avail_count():
             var = authenticate_email_token(_email, _token)
 
             if var:
+                # Close all reserved rides older than 5 minutes
+                sql = f"UPDATE rides SET status = 'canceled' WHERE reserveTimeStamp < (NOW() - INTERVAL 5 MINUTE) AND " \
+                      f"status = 'reserved' "
+                cnx = mysql.connect()
+                cursor = cnx.cursor()
+                cursor.execute(sql)
+                cursor.close()
+                cnx.commit()
+
+                # Remove reservations from reserved bikes older than 5 minutes
+                sql = f"UPDATE bikes SET status = 'free', reserveTimeStamp = NULL, currentRideID = NULL WHERE " \
+                      f"reserveTimeStamp < (NOW() - INTERVAL 5 MINUTE) AND status = 'reserved' "
+                cursor = cnx.cursor()
+                cursor.execute(sql)
+                cursor.close()
+                cnx.commit()
+
                 sql = f"SELECT stations.stationName, stations.stationID, stations.latitude, stations.longitude, " \
                       f"count(bikes.bikeID) AS available FROM bikes, " \
                       f"stations, users WHERE users.email = '{_email}' AND bikes.currentStationID = " \
                       f"stations.stationID AND stations.domain = users.domain AND bikes.status = 'free' GROUP BY " \
                       f"stations.stationName, stations.stationID "
-                cnx = mysql.connect()
                 cursor = cnx.cursor()
                 cursor.execute(sql)
                 bike_list = []
