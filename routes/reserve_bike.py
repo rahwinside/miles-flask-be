@@ -30,18 +30,22 @@ def reserve_bike():
                 cnx.commit()
 
                 # Remove reservations from reserved bikes older than 5 minutes
-                sql = f"UPDATE bikes SET status = 'free' WHERE reserveTimeStamp < (NOW() - INTERVAL 5 MINUTE) AND " \
-                      f"status = 'reserved' "
+                sql = f"UPDATE bikes SET status = 'free', reserveTimeStamp = NULL, currentRideID = NULL WHERE " \
+                      f"reserveTimeStamp < (NOW() - INTERVAL 5 MINUTE) AND status = 'reserved' "
                 cursor = cnx.cursor()
                 cursor.execute(sql)
                 cursor.close()
                 cnx.commit()
 
                 # Find an available bike
-                sql = f"SELECT bikeID from bikes INNER JOIN (SELECT min(lastRideID) minLastRideID FROM bikes WHERE " \
-                      f"currentStationID = {_station_id}  AND status = 'free') minTable ON bikes.lastRideID = " \
-                      f"minTable.minLastRideID WHERE lastRideID = minLastRideID AND currentStationID = {_station_id} " \
-                      f"AND status = 'free' "
+                # sql = f"SELECT bikeID from bikes INNER JOIN (SELECT min(lastRideID) minLastRideID FROM bikes WHERE " \
+                #       f"currentStationID = {_station_id}  AND status = 'free') minTable ON bikes.lastRideID = " \
+                #       f"minTable.minLastRideID WHERE lastRideID = minLastRideID AND currentStationID = {_station_id} " \
+                #       f"AND status = 'free' "
+
+                sql = f"SELECT bikeID from bikes WHERE (lastRideID = (SELECT min(lastRideID) FROM bikes WHERE " \
+                      f"currentStationID = {_station_id} AND status = 'free') OR lastRideID IS NULL) AND " \
+                      f"currentStationID = {_station_id} AND status = 'free' "
                 cursor = cnx.cursor()
                 cursor.execute(sql)
                 for first_bike in cursor:
