@@ -92,6 +92,8 @@ def reserve_bike():
                 res = jsonify(ride_info)
                 res.status_code = 200
                 return res
+            else:
+                return forbidden()
 
     except Exception as e:
         print(e)

@@ -64,7 +64,7 @@ def after_request_func(response):
 
 
 # Add API endpoints here
-from routes import login, auth_status, get_bikes, reserve_bike
+from routes import login, auth_status, get_bikes, reserve_bike, cancel_ride
 
 
 @app.route('/')
